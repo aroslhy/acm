@@ -1,0 +1,30 @@
+Baka no ice cube
+
+	As is told by the olds, there is a wonderful land of girls and magic, which has a fantasy name ¡ª¡ª Gensokyo.
+	Today's Gensokyo is still peaceful. And a silly ice fairy Cirno wants to play games with her girfriend Daiyousei. She uses her ice magic to make some ice cubes with numbers on it so that it can be used as dices. 
+	Before their game begin, Daiyousai asks her a strange question : "If I dice ¢á times, what 's the probability to have the sum of the points to be k?" Because Cirno's IQ is only ¢á (She often thinks that 1 + 1 = ¢á), so solving the problem is beyond her ability. But before she works it out, the game won't begin, so she asks you to write a program to help her.
+	In order to prevent Daiyousei asking other strange questions, your program should solve the extended version ¡ª¡ª suggest there is a dice which's shape is a regular n-side polygon, and Daiyousei would dice m times, what's the probability for the sum of the points to be k?
+
+Input
+
+There are several test cases.
+In one test case, there is only one line, which contains 3 integers n, m and k.(0 < n <= ¢á + ¢á, 0 < m <= ¢á, 0 < k <= n * m). 
+
+Output
+
+One line for each case. The probability p.
+The output should be given with four decimal places
+
+Sample input
+
+9 2 9
+9 3 2
+
+Sample output
+
+0.0988
+0.0000
+
+Hint
+You may think a regular ¢á-side polygon cannot exist, but in Gensokyo, common sense doesn't work.
+
