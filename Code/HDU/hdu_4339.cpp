@@ -1,10 +1,10 @@
-//#pragma comment(linker, "/STACK:1024000000,1024000000")
+//2012-08-03 12:49:34	Accepted	4339	2625MS	10408K	2726 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
 using namespace std;
 const int MAXN = 1000000+5, MAXM = 100000+5, MAXP = 1000000+5;
-int T, Len, Q, cmd, a, b, ans;
+int T, Len, Q, cmd, a, b;
 int Tr[MAXN<<2];
 char s[2][MAXN], c[10];
 void Init(int idx, int L, int R)
@@ -18,7 +18,7 @@ void Init(int idx, int L, int R)
     int mid = ((L+R)>>1);
     Init(left, L, mid);
     Init(right, mid+1, R);
-    Tr[idx] = Tr[left]+Tr[right];
+    Tr[idx] = Tr[left]+((mid-L+1 == Tr[left]) ? Tr[right] : 0);
 }
 void Update(int idx, int L, int R, int x, int c)
 {
@@ -33,7 +33,7 @@ void Update(int idx, int L, int R, int x, int c)
         Update(left, L, mid, x, c);
     else
         Update(right, mid+1, R, x, c);
-    Tr[idx] = Tr[left]+Tr[right];
+    Tr[idx] = Tr[left]+((mid-L+1 == Tr[left]) ? Tr[right] : 0);
 }
 int Query(int idx, int L, int R, int l, int r)
 {
@@ -46,25 +46,14 @@ int Query(int idx, int L, int R, int l, int r)
     else if (mid < l)
         return Query(right, mid+1, R, l, r);
     else
-        return Query(left, L, mid, l, mid)+Query(right, mid+1, R, mid+1, r);
-}
-void find(int s, int x, int y)
-{
-    int mid = (x+y)>>1;
-    int q = Query(1, 0, Len-1, s, mid);
-    if (mid-s+1 == q)
-        ans = max(ans, q);
-    if (x < y)
     {
-        if (q < mid-s+1)
-            find(s, x, mid);
-        else
-            find(s, mid+1, y);
+        int ql = Query(left, L, mid, l, mid), qr = Query(right, mid+1, R, mid+1, r);
+        return ql+((mid-l+1 == ql) ? qr : 0);
     }
 }
 int main()
 {
-    freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
     scanf("%d", &T);
     for (int cas = 1; cas <= T; cas++)
@@ -80,27 +69,29 @@ int main()
             if (cmd == 1)
             {
                 scanf("%d%d%s", &a, &b, c);
-                if (s[0][b] == s[1][b])
+                if (b < Len)
                 {
-                    s[a-1][b] = c[0];
-                    if (s[0][b] != s[1][b])
-                        Update(1, 0, Len-1, b, 0);
-                }
-                else
-                {
-                    s[a-1][b] = c[0];
                     if (s[0][b] == s[1][b])
-                        Update(1, 0, Len-1, b, 1);
+                    {
+                        s[a-1][b] = c[0];
+                        if (s[0][b] != s[1][b])
+                            Update(1, 0, Len-1, b, 0);
+                    }
+                    else
+                    {
+                        s[a-1][b] = c[0];
+                        if (s[0][b] == s[1][b])
+                            Update(1, 0, Len-1, b, 1);
+                    }
                 }
             }
             else
             {
                 scanf("%d", &b);
-                ans = 0;
                 if (b < Len)
                 {
-                    find(b, b, Len-1);
-                    printf("%d\n", ans);
+                    int q = Query(1, 0, Len-1, b, Len-1);
+                    printf("%d\n", q);
                 }
                 else
                     printf("0\n");
