@@ -1,3 +1,4 @@
+//2012-07-07 11:24:23	Accepted	3887	1781MS	5824K	2641 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -81,7 +82,7 @@ void dfs()
 }
 int main()
 {
-    freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
     while (scanf("%d%d", &n, &p) && n && p)
     {

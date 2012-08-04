@@ -1,3 +1,4 @@
+//2012-07-07 14:14:49	Accepted	3889	1203MS	364K	1958 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<cmath>
@@ -41,7 +42,7 @@ double correlation()
 }
 int main()
 {
-    freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
     while (scanf("%d%d", &p, &n) != EOF)
     {
