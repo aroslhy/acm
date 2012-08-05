@@ -1,3 +1,4 @@
+//2012-08-05 10:43:10	Accepted	4331	2812MS	20028K	3485 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -88,7 +89,7 @@ int Calc(int a, int b)
 }
 int main()
 {
-    freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
     scanf("%d", &T);
     for (int cas = 1; cas <= T; cas++)
