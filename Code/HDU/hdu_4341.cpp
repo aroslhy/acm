@@ -1,9 +1,8 @@
-//2012-08-07 19:00:42	Accepted	4341	859MS	756K	2023 B	C++	Aros
+//2012-08-07 19:47:53	Accepted	4341	859MS	756K	1964 B	C++	Aros
 #include<cstdio>
 #include<cstring>
 #include<cmath>
 #include<algorithm>
-#include<map>
 #include<vector>
 using namespace std;
 const int MAXN = 200+5, MAXM = 40000+5;
@@ -18,12 +17,8 @@ struct Node
 };
 bool operator < (const Node a, const Node b)
 {
-    if (a.y != b.y)
-        return a.y < b.y;
-    else
-        return a.x < b.x;
+    return a.y < b.y;
 }
-map<Node, int> M;
 vector<Node> V[MAXN];
 int gcd(int x, int y)
 {
@@ -31,7 +26,7 @@ int gcd(int x, int y)
 }
 int main()
 {
-    freopen("input.txt", "r", stdin);
+//    freopen("input.txt", "r", stdin);
 //    freopen("output.txt", "w", stdout);
     int cas = 0;
     while (scanf("%d%d", &N, &T) != EOF)
