@@ -1,4 +1,4 @@
-//2012-08-06 21:29:45	Accepted	3308	484MS	5752K	3143 B	G++	Aros
+//2012-08-07 09:59:18	Accepted	3308	484MS	5752K	2892 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -10,6 +10,21 @@ struct Node
     int ml, lml, rml, tol, tor;
 } Tr[MAXN<<2];
 char cmd[5];
+void PushUp(int idx, int L, int R)
+{
+    int mid = (L+R)/2, left = idx*2, right = idx*2+1;
+    Tr[idx].ml = max(Tr[left].ml, Tr[right].ml);
+    if (Tr[left].tor < Tr[right].tol)
+        Tr[idx].ml = max(Tr[idx].ml, Tr[left].rml+Tr[right].lml);
+    Tr[idx].lml = Tr[left].lml;
+    if (Tr[left].lml == mid-L+1 && Tr[left].tor < Tr[right].tol)
+        Tr[idx].lml += Tr[right].lml;
+    Tr[idx].rml = Tr[right].rml;
+    if (Tr[right].rml == R-mid && Tr[left].tor < Tr[right].tol)
+        Tr[idx].rml += Tr[left].rml;
+    Tr[idx].tol = Tr[left].tol;
+    Tr[idx].tor = Tr[right].tor;
+}
 void Init(int idx, int L, int R)
 {
     if (L == R)
@@ -24,18 +39,7 @@ void Init(int idx, int L, int R)
     int mid = (L+R)/2, left = idx*2, right = idx*2+1;
     Init(left, L, mid);
     Init(right, mid+1, R);
-    Tr[idx].ml = max(Tr[left].ml, Tr[right].ml);
-    if (Tr[left].tor < Tr[right].tol)
-        Tr[idx].ml = max(Tr[idx].ml, Tr[left].rml+Tr[right].lml);
-    Tr[idx].lml = Tr[left].lml;
-    if (Tr[left].lml == mid-L+1 && Tr[left].tor < Tr[right].tol)
-        Tr[idx].lml += Tr[right].lml;
-    Tr[idx].rml = Tr[right].rml;
-    if (Tr[right].rml == R-mid && Tr[left].tor < Tr[right].tol)
-        Tr[idx].rml += Tr[left].rml;
-    Tr[idx].tol = Tr[left].tol;
-    Tr[idx].tor = Tr[right].tor;
-
+    PushUp(idx, L, R);
 }
 void Update(int idx, int L, int R, int x, int c)
 {
@@ -50,17 +54,7 @@ void Update(int idx, int L, int R, int x, int c)
         Update(left, L, mid, x, c);
     else
         Update(right, mid+1, R, x, c);
-    Tr[idx].ml = max(Tr[left].ml, Tr[right].ml);
-    if (Tr[left].tor < Tr[right].tol)
-        Tr[idx].ml = max(Tr[idx].ml, Tr[left].rml+Tr[right].lml);
-    Tr[idx].lml = Tr[left].lml;
-    if (Tr[left].lml == mid-L+1 && Tr[left].tor < Tr[right].tol)
-        Tr[idx].lml += Tr[right].lml;
-    Tr[idx].rml = Tr[right].rml;
-    if (Tr[right].rml == R-mid && Tr[left].tor < Tr[right].tol)
-        Tr[idx].rml += Tr[left].rml;
-    Tr[idx].tol = Tr[left].tol;
-    Tr[idx].tor = Tr[right].tor;
+    PushUp(idx, L, R);
 }
 int Query(int idx, int L, int R, int l, int r)
 {
