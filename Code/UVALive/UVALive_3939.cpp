@@ -22,7 +22,6 @@ int find(int x)
 }
 int main()
 {
-    freopen("g.in", "r", stdin);
     for (int cas = 1; scanf("%d%d%d", &N, &M, &R) != EOF; cas++)
     {
         u.clear(); v.clear(); w.clear();
