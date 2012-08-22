@@ -1,4 +1,4 @@
-//2012-08-21 21:40:44	Accepted	4385	406MS	4344K	1920 B	G++	Aros
+//2012-08-22 12:01:22	Accepted	4385	375MS	4376K	1918 B	C++	Aros
 #include<cstdio>
 #include<cstring>
 #include<cmath>
