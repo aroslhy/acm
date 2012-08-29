@@ -29,7 +29,7 @@ int main()
         long long n1 = (N/l)*l, n2 = N%l;
         if (n1)
             n1 -= l, n2 += l;
-        int c1 = V[0]*S[1] > V[1]*S[0] ? 0 : 1, c2 = S[0] > S[1] ? 0 : 1;;
+        int c1 = V[0]*S[1] > V[1]*S[0] ? 0 : 1, c2 = S[0] > S[1] ? 0 : 1;
         long long ans1 = n1/S[c1]*V[c1], ans2 = 0;
         for (int i = 0; i*S[c2] <= n2; i++)
             ans2 = max(ans2, i*V[c2]+(n2-i*S[c2])/S[1-c2]*V[1-c2]);
