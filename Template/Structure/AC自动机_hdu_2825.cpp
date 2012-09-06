@@ -8,18 +8,6 @@ using namespace std;
 const int MAX_NODE = 100+5;
 //字符集大小,一般字符形式的题26个
 const int MAX_CHD = 26;
-//每个节点的儿子,即当前节点的状态转移
-int chd[MAX_NODE][MAX_CHD];
-//记录题目给的关键数据(点的权值)
-int val[MAX_NODE];
-//传说中的fail指针
-int fail[MAX_NODE];
-//队列,用于广度优先计算fail指针
-queue<int> Q;
-//字母对应的ID
-int ID[1<<8];
-//已使用节点个数
-int nv;
 
 //特定题目需要
 const int MAXN = 25+5;
@@ -28,6 +16,18 @@ int N, M, K, d[2][MAX_NODE][1<<10];
 
 struct AC_Automaton
 {
+    //每个节点的儿子,即当前节点的状态转移
+    int chd[MAX_NODE][MAX_CHD];
+    //记录题目给的关键数据(点的权值)
+    int val[MAX_NODE];
+    //传说中的fail指针
+    int fail[MAX_NODE];
+    //队列,用于广度优先计算fail指针
+    queue<int> Q;
+    //字母对应的ID
+    int ID[1<<8];
+    //已使用节点个数
+    int nv;
     //初始化,计算字母对应的儿子ID,如:'a'->0 ... 'z'->25
     void Initialize()
     {
@@ -85,24 +85,9 @@ struct AC_Automaton
             }
         }
     }
-} ac;
-
-int main()
-{
-    ac.Initialize();
-    while (scanf("%d%d%d", &N, &M, &K) != EOF)
+    //解题
+    int solve()
     {
-        if (!N && !M && !K)
-            break;
-        ac.Reset();
-        for (int i = 0; i < M; i++)
-        {
-            char temp[11];
-            scanf("%s", temp);
-            ac.Insert(temp, 1<<i);
-        }
-        ac.Construct();
-        //SOLVE BY DP
         int corpora = (1<<M)-1, ans = 0, s = 0;
         memset(d[s], 0, sizeof(d[s]));
         d[0][0][0] = 1;
@@ -131,7 +116,26 @@ int main()
                     ans = (ans+d[s][u][a])%MOD;
             }
         }
-        printf("%d\n", ans);
+        return ans;
+    }
+} ac;
+
+int main()
+{
+    ac.Initialize();
+    while (scanf("%d%d%d", &N, &M, &K) != EOF)
+    {
+        if (!N && !M && !K)
+            break;
+        ac.Reset();
+        for (int i = 0; i < M; i++)
+        {
+            char temp[11];
+            scanf("%s", temp);
+            ac.Insert(temp, 1<<i);
+        }
+        ac.Construct();
+        printf("%d\n", ac.solve());
     }
     return 0;
 }
