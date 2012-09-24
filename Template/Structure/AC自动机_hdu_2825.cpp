@@ -88,7 +88,7 @@ struct AC_Automaton
     //解题
     int solve()
     {
-        int corpora = (1<<M)-1, ans = 0, s = 0;
+        int tot = (1<<M)-1, ans = 0, s = 0;
         memset(d[s], 0, sizeof(d[s]));
         d[0][0][0] = 1;
         for (int i = 0; i < N; i++)
@@ -96,7 +96,7 @@ struct AC_Automaton
             int t = 1-s;
             memset(d[t], 0, sizeof(d[t]));
             for (int u = 0; u < nv; u++)
-                for (int a = 0; a <= corpora; a++) if (d[s][u][a])
+                for (int a = 0; a <= tot; a++) if (d[s][u][a])
                     for (int k = 0; k < MAX_CHD; k++)
                     {
                         int v = chd[u][k], b = (a|val[v]);
@@ -104,7 +104,7 @@ struct AC_Automaton
                     }
             s = t;
         }
-        for (int a = 0; a <= corpora; a++)
+        for (int a = 0; a <= tot; a++)
         {
             int cnt = 0;
             for (int i = 0; i < M; i++)
