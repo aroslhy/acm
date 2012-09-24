@@ -1,4 +1,4 @@
-//2012-09-24 15:12:00	Accepted	4419	359MS	4740K	2731 B	G++	Aros
+//2012-09-24 20:30:42	Accepted	4419	359MS	4740K	2707 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -9,9 +9,8 @@ const int ALL = 1<<3;
 int T, N, Y[MAXN][2], clr[MAXN], X[MAXM], y[MAXM], r[MAXM];
 int ID[1<<8];
 int Tsum[ALL][MAXM<<2], Tcov[ALL][MAXM<<2];
-long long area[ALL];
 char C[5];
-map<int, int> My;
+map<int, int> mp;
 bool cmp(const int a, const int b)
 {
     return X[a] < X[b];
@@ -39,7 +38,7 @@ void Update(int tr, int idx, int L, int R, int l, int r, int c)
             Update(tr, right, mid, R, l, r, c);
     }
     if (Tcov[tr][idx])
-        Tsum[tr][idx] = y[R]-y[L];
+        Tsum[tr][idx] = y[R-1]-y[L-1];
     else if (R-L == 1)
         Tsum[tr][idx] = 0;
     else
@@ -53,8 +52,7 @@ int main()
     scanf("%d", &T);
     for (int cas = 1; cas <= T; cas++)
     {
-        memset(area, 0, sizeof(area));
-        My.clear();
+        mp.clear();
         scanf("%d", &N);
         for (int i = 0; i < N; i++)
         {
@@ -68,14 +66,15 @@ int main()
         int n = N<<1;
         sort(r, r+n, cmp);
         sort(y, y+n);
-        for (int i = 0; i < n; i++)
-            My[y[i]] = i;
-//        Build(1, 0, n-1);
+        for (int i = 1; i <= n; i++)
+            mp[y[i-1]] = i;
+//        Build(1, 1, n);
+        long long area[ALL] = {};
         for (int i = 0; i < n; i++)
             for (int k = 1; k < ALL; k++)
             {
                 if (k&clr[r[i]>>1])
-                    Update(k, 1, 0, n-1, My[Y[r[i]>>1][0]], My[Y[r[i]>>1][1]], (r[i]&1 ? -1 : 1));
+                    Update(k, 1, 1, n, mp[Y[r[i]>>1][0]], mp[Y[r[i]>>1][1]], (r[i]&1 ? -1 : 1));
                 if (i+1 < n)
                     area[k] += (long long)Tsum[k][1]*(X[r[i+1]]-X[r[i]]);
             }
