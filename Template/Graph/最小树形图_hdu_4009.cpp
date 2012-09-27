@@ -1,4 +1,3 @@
-//2012-08-21 10:04:52	Accepted	4009	968MS	5744K	2907 B	C++	Aros
 #include<cstdio>
 #include<cstring>
 #include<cmath>

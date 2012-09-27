@@ -1,12 +1,12 @@
+//bigoceanlhy	1743	Accepted	948K	219MS	G++	1873B	2012-09-27 18:35:00
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
 using namespace std;
-const int MAXN = 300000+5, MAXM = 100000+5;
-int T, N, L[MAXM];
+const int MAXN = 20000+5;
+const int INF = 0x3f3f3f3f;
+int N, a[MAXN], s[MAXN];
 int len, sa[MAXN], height[MAXN], rank[MAXN], tmp[MAXN], top[MAXN];
-int *s, a[MAXN];
-char A[MAXM];
 void makesa()
 {
 	int lena = len < 256 ? 256 : len;
@@ -51,45 +51,43 @@ void lcp()
 }
 int main()
 {
-	scanf("%d", &T);
-	for (int cas = 1; cas <= T; cas++)
+	while (scanf("%d", &N) && N)
 	{
-		scanf("%d%s", &N, A);
 		len = 0;
-		for (L[0] = 0; A[L[0]]; L[0]++)
-			a[len++] = A[L[0]]-'a'+1;
-		for (int i = 1; i <= N; i++)
-		{
-			a[len++] = 26+i;
-			scanf("%s", A);
-			for (L[i] = 0; A[L[i]]; L[i]++)
-				a[len++] = A[L[i]]-'a'+1;
-		}
-		a[len++] = 0;
-		long long sumAB = 0, sumB = 0;
-		s = a;
-		makesa(); lcp();
-		for (int i = 1; i < len; i++)
-			sumAB += len-1-sa[i]-height[i];
-		long long l = len-1;
 		for (int i = 0; i < N; i++)
 		{
-			l -= L[i];
-			sumAB -= (L[i]+1)*l;
-			l--;
+			scanf("%d", &a[i]);
+			if (i)
+				s[len++] = a[i]-a[i-1]+88;
 		}
-		s = a+L[0]+1; len -= L[0]+1;
+		s[len++] = 0;
 		makesa(); lcp();
-		for (int i = 1; i < len; i++)
-			sumB += len-1-sa[i]-height[i];
-		l = len-1;
-		for (int i = 1; i < N; i++)
+		int l = 4, r = max(l+1, N/2), ans = -1;
+		while (l != r)
 		{
-			l -= L[i];
-			sumB -= (L[i]+1)*l;
-			l--;
+			int mid = (l+r)>>1, t = 0, mini = sa[0], maxi = sa[0];
+			for (int i = 1; i < len; i++)
+			{
+				if (height[i] >= mid)
+				{
+					mini = min(mini, sa[i]);
+					maxi = max(maxi, sa[i]);
+				}
+				else
+				{
+					t = max(t, maxi-mini);
+					mini = maxi = sa[i];
+				}
+			}
+			if (max(t, maxi-mini) > mid)
+			{
+				ans = mid;
+				l = mid+1;
+			}
+			else
+				r = mid;
 		}
-		printf("Case %d: %I64d\n", cas, sumAB-sumB);
+		printf("%d\n", ans+1);
 	}
 	return 0;
 }
