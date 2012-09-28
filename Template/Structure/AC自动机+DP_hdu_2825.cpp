@@ -19,7 +19,7 @@ struct AC_Automaton
     //每个节点的儿子,即当前节点的状态转移
     int chd[MAX_NODE][MAX_CHD];
     //记录题目给的关键数据(点的权值)
-    int val[MAX_NODE];
+    int out[MAX_NODE];
     //传说中的fail指针
     int fail[MAX_NODE];
     //队列,用于广度优先计算fail指针
@@ -51,12 +51,12 @@ struct AC_Automaton
             if (!chd[u][c])
             {
                 memset(chd[nv], 0, sizeof(chd[nv]));
-                val[nv] = 0;
+                out[nv] = 0;
                 chd[u][c] = nv++;
             }
             u = chd[u][c];
         }
-        val[u] = key;
+        out[u] = key;
     }
     //建立AC自动机,确定每个节点的权值以及状态转移
     void Construct()
@@ -77,8 +77,8 @@ struct AC_Automaton
                 {
                     Q.push(v);
                     fail[v] = chd[fail[u]][i];
-                    //以下一行代码要根据题目所给val的含义来写
-                    val[v] |= val[fail[v]];
+                    //以下一行代码要根据题目所给out的含义来写
+                    out[v] |= out[fail[v]];
                 }
                 else
                     v = chd[fail[u]][i];
@@ -99,7 +99,7 @@ struct AC_Automaton
                 for (int a = 0; a <= tot; a++) if (d[s][u][a])
                     for (int k = 0; k < MAX_CHD; k++)
                     {
-                        int v = chd[u][k], b = (a|val[v]);
+                        int v = chd[u][k], b = (a|out[v]);
                         d[t][v][b] = (d[t][v][b]+d[s][u][a])%MOD;
                     }
             s = t;
