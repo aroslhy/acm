@@ -1,4 +1,3 @@
-//2012-09-06 11:21:57	Accepted	2222	687MS	26632K	2413 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
