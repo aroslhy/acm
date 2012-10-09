@@ -40,8 +40,6 @@ bool dfs(int u, int step = 0)
 }
 int main()
 {
-//    freopen("input.txt", "r", stdin);
-//    freopen("output.txt", "w", stdout);
     while (scanf("%d%d", &N, &M) != EOF)
     {
         Init();

@@ -75,8 +75,6 @@ void addedge(int x, int y, int z)
 }
 int main()
 {
-//    freopen("onlinejudge.in", "r", stdin);
-//    freopen("onlinejudge.out", "w", stdout);
     while (scanf("%d%d%d%d", &N, &X, &Y, &Z))
     {
         if (!N && !X && !Y && !Z)
