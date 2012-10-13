@@ -1,3 +1,4 @@
+//4769 	Fuzzy Google Suggest 	Accepted 	C++ 	0.876 	2012-10-13 08:04:31
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
