@@ -4,7 +4,7 @@
 #include<queue>
 using namespace std;
 
-//MAX_NODE = StringNumber * StringLength
+//MAX_NODE = StringNumber*StringLength
 const int MAX_NODE = 100+5;
 //字符集大小,一般字符形式的题26个
 const int MAX_CHD = 26;
