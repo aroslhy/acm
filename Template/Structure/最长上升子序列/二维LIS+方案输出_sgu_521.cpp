@@ -1,3 +1,6 @@
+/*
+正向、反向分别求LIS，再枚举每个点……
+*/
 #include<cstdio>
 #include<cstring>
 #include<algorithm>

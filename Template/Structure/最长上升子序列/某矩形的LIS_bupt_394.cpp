@@ -1,3 +1,6 @@
+/*
+离线读入所有点（左下、右上），在左下点查询，右上点更新。
+*/
 #include<cstdio>
 #include<cstring>
 #include<algorithm>

@@ -1,3 +1,6 @@
+/*
+求字典中存在前缀与查询串编辑距离小于阈值的词的个数
+*/
 #include<cstdio>
 #include<cstring>
 #include<algorithm>

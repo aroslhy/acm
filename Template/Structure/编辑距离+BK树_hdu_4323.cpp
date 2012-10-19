@@ -1,3 +1,7 @@
+/*
+1.dp求编辑距离
+2.bk树找相差d的单词
+*/
 #include<cstdio>
 #include<cstring>
 #include<iostream>
@@ -40,8 +44,6 @@ void dfs(int u)
 }
 int main()
 {
-//    freopen("input.txt", "r", stdin);
-//    freopen("output.txt", "w", stdout);
     scanf("%d", &T);
     for (int cas = 1; cas <= T; cas++)
     {
