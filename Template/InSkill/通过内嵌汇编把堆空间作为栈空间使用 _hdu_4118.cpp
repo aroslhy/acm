@@ -30,8 +30,8 @@ void call_dfs()
 	int bak;
 	__asm__ __volatile__
 	(
-		"movl %%esp, %0\n\t"
-		"movl %1, %%esp\n\t":
+		"movl %%esp, %0\n"
+		"movl %1, %%esp\n":
 		"=g"(bak):
 		"g"(stack+STACK_SIZE-1):
 	);
@@ -40,7 +40,7 @@ void call_dfs()
 
 	__asm__ __volatile__
 	(
-		"movl %0, %%esp\n\t":
+		"movl %0, %%esp\n":
 		:
 		"g"(bak):
 	);
