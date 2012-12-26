@@ -1,3 +1,6 @@
+au BufWritePre * sil %s/\s\+$//e "保存文件时自动删除行尾空格或Tab
+au BufWritePre * %s/^$\n\+\%$//ge "删除文件尾多余的空行
+
 "设置深色主题
 colorscheme evening
 "隐藏工具栏
@@ -60,9 +63,9 @@ endfunc
 "设置程序的编译，运行,调试的快捷键
 map <C-F9> :call CompileRun()<CR>
 map <F9> :call Run()<CR>
-"map <F7> :call Debug()<CR>
+map <F8> :call Debug()<CR>
 "单选注释
-":map <C-q> <Esc>^i//<Esc>
+:map <C-q> <Esc>^i//<Esc>
 "取消单选注释
-":map <C-w> <Esc>^df/<Esc>
+:map <C-w> <Esc>^df/<Esc>
 
