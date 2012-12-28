@@ -16,7 +16,7 @@ void get_next(char *pat)
 	int k = 0;
 	while (pat[k+1] && pat[k] == pat[k+1])
 		k++;
-    next[1] = k;
+	next[1] = k;
 	for(int id = 1, i = 2; pat[i]; i++)
 	{
 		int u = i-id;
@@ -24,9 +24,9 @@ void get_next(char *pat)
 		{
 			int j = next[id]+id-i;
 			if (j < 0)
-                j = 0;
+				j = 0;
 			while (pat[j+i] && pat[j] == pat[j+i])
-                j++;
+				j++;
 			next[i] = j;
 			id = i;
 		}

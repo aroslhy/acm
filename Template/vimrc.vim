@@ -12,13 +12,14 @@ colorscheme evening
 "set expandtab "使用空格代替tab.
 set ts=4 "空格数量
 set shiftwidth=4 "自动缩进的宽度
+set cindent
 set showmatch
-set cursorline
+"set cursorline
 "set nobackup
 set nu
 
 "定义CompileRun函数，用来调用进行编译和运行
-func CompileRun()
+func Compile()
 	exec "w"
 	"C程序
 	if &filetype == 'c'
@@ -35,6 +36,15 @@ endfunc
 
 "定义Run函数
 func Run()
+	if &filetype == 'c' || &filetype == 'cpp' || &filetype == 'cc'
+		exec "!./%<"
+	elseif &filetype == 'java'
+		exec "!java %<"
+	endif
+endfunc
+
+func CompileRun()
+	call Compile()
 	if &filetype == 'c' || &filetype == 'cpp' || &filetype == 'cc'
 		exec "!./%<"
 	elseif &filetype == 'java'
@@ -61,11 +71,12 @@ endfunc
 "结束定义Debug
 
 "设置程序的编译，运行,调试的快捷键
-map <C-F9> :call CompileRun()<CR>
-map <F9> :call Run()<CR>
+map <C-F9> :call Compile()<CR>
+map <F9> :call CompileRun()<CR>
 map <F8> :call Debug()<CR>
-"单选注释
-:map <C-q> <Esc>^i//<Esc>
-"取消单选注释
-:map <C-w> <Esc>^df/<Esc>
+
+"set hlsearch "高亮显示搜索结果
+set incsearch "查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词，依次类推，进行查找时，使用此设置会快速找到答案，当你找要匹配的单词时，别忘记回车
+
+
 
