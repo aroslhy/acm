@@ -2,7 +2,7 @@ au BufWritePre * sil %s/\s\+$//e "保存文件时自动删除行尾空格或Tab
 au BufWritePre * %s/^$\n\+\%$//ge "删除文件尾多余的空行
 
 "设置深色主题
-colorscheme evening
+colorscheme koehler
 "隐藏工具栏
 "set guioptions-=T
 
@@ -77,6 +77,4 @@ map <F8> :call Debug()<CR>
 
 "set hlsearch "高亮显示搜索结果
 set incsearch "查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词，依次类推，进行查找时，使用此设置会快速找到答案，当你找要匹配的单词时，别忘记回车
-
-
 
