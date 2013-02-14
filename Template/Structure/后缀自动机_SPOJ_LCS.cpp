@@ -12,7 +12,7 @@ const int MAX_CHD = 26;
 //每个节点的儿子,即当前节点的状态转移
 int chd[MAX_NODE][MAX_CHD];
 //此节点代表最长串的长度
-int len[MAX_NODE];
+int ml[MAX_NODE];
 //父亲/失败指针
 int fa[MAX_NODE];
 //字母对应的id
@@ -27,9 +27,9 @@ namespace Suffix_Automaton
 			id['a'+i] = i;
 	}
 	//增加一个节点
-	void Add(int u, int _len, int _fa, int v = -1)
+	void Add(int u, int _ml, int _fa, int v = -1)
 	{
-		len[u] = _len;
+		ml[u] = _ml;
 		fa[u] = _fa;
 		if (v == -1)
 			memset(chd[u], -1, sizeof(chd[u]));
@@ -37,11 +37,11 @@ namespace Suffix_Automaton
 			memcpy(chd[u], chd[v], sizeof(chd[v]));
 	}
 	//建立后缀自动机
-	void Construct(char *str, int length)
+	void Construct(char *str, int len)
 	{
 		Add(0, 0, -1);
 		int nv = 1, cur = 0;
-		for (int i = 0; i < length; i++)
+		for (int i = 0; i < len; i++)
 		{
 			int c = id[str[i]], p = cur;
 			cur = nv++;
@@ -53,13 +53,13 @@ namespace Suffix_Automaton
 			else
 			{
 				int q = chd[p][c];
-				if (len[q] == len[p]+1)
+				if (ml[q] == ml[p]+1)
 					fa[cur] = q;
 				else
 				{
 					int r = nv++;
-					Add(r, len[q], fa[q], q);
-					len[r] = len[p]+1;
+					Add(r, ml[q], fa[q], q);
+					ml[r] = ml[p]+1;
 					fa[q] = r;
 					fa[cur] = r;
 					for (; p != -1 && chd[p][c] == q; p = fa[p])
@@ -69,6 +69,7 @@ namespace Suffix_Automaton
 		}
 	}
 }
+
 int main()
 {
 	Suffix_Automaton::Initialize();
@@ -90,7 +91,7 @@ int main()
 				u = fa[u];
 			if (u != -1)
 			{
-				l = len[u]+1;
+				l = ml[u]+1;
 				u = chd[u][c];
 			}
 			else
