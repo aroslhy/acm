@@ -3,38 +3,22 @@
 #include<algorithm>
 using namespace std;
 const int MAXN = 250000+5;
-char A[MAXN], B[MAXN];
-
-//MAX_NODE = StringLength*2
-const int MAX_NODE = 500000+5;
-//字符集大小,一般字符形式的题26个
-const int MAX_CHD = 26;
-//已使用节点个数
-int nv;
-//每个节点的儿子,即当前节点的状态转移
-int chd[MAX_NODE][MAX_CHD];
-//此节点代表最长串的长度
-int ml[MAX_NODE];
-//父亲/失败指针
-int fa[MAX_NODE];
-//字母对应的id
-int id[1<<8];
-
+const int MAX_NODE = 500000+5, MAX_CHD = 26;
+int nv, chd[MAX_NODE][MAX_CHD], ml[MAX_NODE], fa[MAX_NODE], id[1<<8];
+int cnt[MAX_NODE], r[MAX_NODE], F[MAXN];
+char s[MAXN];
 namespace Suffix_Automaton
 {
-	//初始化,计算字母对应的儿子id,如:'a'->0 ... 'z'->25
 	void Initialize()
 	{
 		for (int i = 0; i < MAX_CHD; i++)
 			id['a'+i] = i;
 	}
-	//增加一个节点
 	void Add(int u, int _ml, int _fa, int v = -1)
 	{
 		ml[u] = _ml; fa[u] = _fa;
 		v == -1 ? memset(chd[u], -1, sizeof(chd[u])) : memcpy(chd[u], chd[v], sizeof(chd[v]));
 	}
-	//建立后缀自动机
 	void Construct(char *str)
 	{
 		nv = 1; Add(0, 0, -1);
@@ -63,29 +47,39 @@ namespace Suffix_Automaton
 		}
 	}
 }
-
+bool cmp(const int &a, const int &b)
+{
+	return ml[a] > ml[b];
+}
 int main()
 {
 	Suffix_Automaton::Initialize();
-	scanf("%s%s", A, B);
-	Suffix_Automaton::Construct(A);
-	int l = 0, u = 0, ans = 0;
-	for (int i = 0; B[i]; i++)
+	scanf("%s", s);
+	Suffix_Automaton::Construct(s);
+	for (int i = 0; i < nv; i++)
+		r[i] = i;
+	sort(r, r+nv, cmp);
+	memset(cnt, 0, sizeof(cnt));
+	int l = 0, u = 0;
+	for (int i = 0; s[i]; i++)
 	{
-		int c = id[B[i]];
+		int c = id[s[i]];
 		if (chd[u][c] != -1)
 			l++, u = chd[u][c];
 		else
 		{
 			while (u != -1 && chd[u][c] == -1)
 				u = fa[u];
-			if (u != -1)
-				l = ml[u]+1, u = chd[u][c];
-			else
-				l = 0, u = 0;
+			l = ml[u]+1, u = chd[u][c];
 		}
-		ans = max(ans, l);
+		cnt[u]++;
 	}
-	printf("%d\n", ans);
+	for (int i = 0; i < nv; i++)
+	{
+		F[ml[r[i]]] = max(F[ml[r[i]]], cnt[r[i]]);
+		cnt[fa[r[i]]] += cnt[r[i]];
+	}
+	for (int i = 1; s[i-1]; i++)
+		printf("%d\n", F[i]);
 	return 0;
 }
