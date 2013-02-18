@@ -17,7 +17,10 @@ namespace Suffix_Automaton
 	void Add(int u, int _ml, int _fa, int v = -1)
 	{
 		ml[u] = _ml; fa[u] = _fa;
-		v == -1 ? memset(chd[u], -1, sizeof(chd[u])) : memcpy(chd[u], chd[v], sizeof(chd[v]));
+		if (v == -1)
+			memset(chd[u], -1, sizeof(chd[u]));
+		else
+			memcpy(chd[u], chd[v], sizeof(chd[v]));
 	}
 	void Construct(char *str)
 	{
