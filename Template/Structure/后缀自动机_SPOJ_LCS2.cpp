@@ -3,17 +3,35 @@
 #include<algorithm>
 using namespace std;
 const int MAXN = 100000+5, MAXM = 10+5;
-const int MAX_NODE = 200000+5, MAX_CHD = 26;
-int nv, chd[MAX_NODE][MAX_CHD], ml[MAX_NODE], fa[MAX_NODE], id[1<<8];
-int mml[MAX_NODE][MAXM], r[MAX_NODE];
 char s[MAXN];
+
+//MAX_NODE = StringLength*2
+const int MAX_NODE = 500000+5;
+//字符集大小,一般字符形式的题26个
+const int MAX_CHD = 26;
+//已使用节点个数
+int nv;
+//每个节点的儿子,即当前节点的状态转移
+int chd[MAX_NODE][MAX_CHD];
+//此节点代表最长串的长度
+int ml[MAX_NODE];
+//父亲/失败指针
+int fa[MAX_NODE];
+//字母对应的id
+int id[1<<8];
+
+//特定题目需要
+int mml[MAX_NODE][MAXM], r[MAX_NODE];
+
 namespace Suffix_Automaton
 {
+	//初始化,计算字母对应的儿子id,如:'a'->0 ... 'z'->25
 	void Initialize()
 	{
 		for (int i = 0; i < MAX_CHD; i++)
 			id['a'+i] = i;
 	}
+	//增加一个节点
 	void Add(int u, int _ml, int _fa, int v = -1)
 	{
 		ml[u] = _ml; fa[u] = _fa;
@@ -22,6 +40,7 @@ namespace Suffix_Automaton
 		else
 			memcpy(chd[u], chd[v], sizeof(chd[v]));
 	}
+	//建立后缀自动机
 	void Construct(char *str)
 	{
 		nv = 1; Add(0, 0, -1);
@@ -50,6 +69,7 @@ namespace Suffix_Automaton
 		}
 	}
 }
+
 bool cmp(const int &a, const int &b)
 {
 	return ml[a] > ml[b];
