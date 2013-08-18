@@ -1,4 +1,4 @@
-// 2013-08-17 22:58:54	Accepted	4578	2437MS	5352K	4066 B	G++	Aros
+// 2013-08-18 14:11:59	Accepted	4578	2343MS	5352K	3304 B	G++	Aros
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -40,69 +40,44 @@ void PushDown(int idx, int L, int R)
 	mark[right][0] = (mark[right][0]*a1)%MOD, mark[right][1] = (mark[right][1]*a1+b1)%MOD;
 	mark[idx][0] = 1, mark[idx][1] = 0;
 }
-void PushUp(int idx)
+void Update(int idx, int L, int R, int l, int r, int ope, int c)
 {
-	int left = idx<<1, right = idx<<1|1;
+	if (l <= L && R <= r)
+	{
+		int c1 = c, c2 = c*c%MOD, c3 = c2*c%MOD;
+		if (ope == 1)
+		{
+			Tr[idx][2] = (Tr[idx][2]+3*c1*Tr[idx][1]+3*c2*Tr[idx][0]+(R-L+1)*c3)%MOD;
+			Tr[idx][1] = (Tr[idx][1]+2*c1*Tr[idx][0]+(R-L+1)*c2)%MOD;
+			Tr[idx][0] = (Tr[idx][0]+(R-L+1)*c1)%MOD;
+			mark[idx][1] = (mark[idx][1]+c)%MOD;
+		}
+		else if (ope == 2)
+		{
+			Tr[idx][2] = Tr[idx][2]*c3%MOD;
+			Tr[idx][1] = Tr[idx][1]*c2%MOD;
+			Tr[idx][0] = Tr[idx][0]*c1%MOD;
+			mark[idx][0] = (mark[idx][0]*c)%MOD, mark[idx][1] = (mark[idx][1]*c)%MOD;
+
+		}
+		else
+		{
+			Tr[idx][2] = (R-L+1)*c3%MOD;
+			Tr[idx][1] = (R-L+1)*c2%MOD;
+			Tr[idx][0] = (R-L+1)*c1%MOD;
+			mark[idx][0] = 0, mark[idx][1] = c;
+		}
+		return;
+	}
+	PushDown(idx, L, R);
+	int left = idx<<1, right = idx<<1|1, mid = (L+R)>>1;
+	if (l <= mid)
+		Update(left, L, mid, l, r, ope, c);
+	if (mid < r)
+		Update(right, mid+1, R, l, r, ope, c);
 	Tr[idx][2] = (Tr[left][2]+Tr[right][2])%MOD;
 	Tr[idx][1] = (Tr[left][1]+Tr[right][1])%MOD;
 	Tr[idx][0] = (Tr[left][0]+Tr[right][0])%MOD;
-}
-void Add(int idx, int L, int R, int l, int r, int c)
-{
-	if (l <= L && R <= r)
-	{
-		int c1 = c, c2 = c*c%MOD, c3 = c2*c%MOD;
-		Tr[idx][2] = (Tr[idx][2]+3*c1*Tr[idx][1]+3*c2*Tr[idx][0]+(R-L+1)*c3)%MOD;
-		Tr[idx][1] = (Tr[idx][1]+2*c1*Tr[idx][0]+(R-L+1)*c2)%MOD;
-		Tr[idx][0] = (Tr[idx][0]+(R-L+1)*c1)%MOD;
-		mark[idx][1] = (mark[idx][1]+c)%MOD;
-		return;
-	}
-	PushDown(idx, L, R);
-	int left = idx<<1, right = idx<<1|1, mid = (L+R)>>1;
-	if (l <= mid)
-		Add(left, L, mid, l, r, c);
-	if (mid < r)
-		Add(right, mid+1, R, l, r, c);
-	PushUp(idx);
-}
-void Multiply(int idx, int L, int R, int l, int r, int c)
-{
-	if (l <= L && R <= r)
-	{
-		int c1 = c, c2 = c*c%MOD, c3 = c2*c%MOD;
-		Tr[idx][2] = Tr[idx][2]*c3%MOD;
-		Tr[idx][1] = Tr[idx][1]*c2%MOD;
-		Tr[idx][0] = Tr[idx][0]*c1%MOD;
-		mark[idx][0] = (mark[idx][0]*c)%MOD, mark[idx][1] = (mark[idx][1]*c)%MOD;
-		return;
-	}
-	PushDown(idx, L, R);
-	int left = idx<<1, right = idx<<1|1, mid = (L+R)>>1;
-	if (l <= mid)
-		Multiply(left, L, mid, l, r, c);
-	if (mid < r)
-		Multiply(right, mid+1, R, l, r, c);
-	PushUp(idx);
-}
-void Change(int idx, int L, int R, int l, int r, int c)
-{
-	if (l <= L && R <= r)
-	{
-		int c1 = c, c2 = c*c%MOD, c3 = c2*c%MOD;
-		Tr[idx][2] = (R-L+1)*c3%MOD;
-		Tr[idx][1] = (R-L+1)*c2%MOD;
-		Tr[idx][0] = (R-L+1)*c1%MOD;
-		mark[idx][0] = 0, mark[idx][1] = c;
-		return;
-	}
-	PushDown(idx, L, R);
-	int left = idx<<1, right = idx<<1|1, mid = (L+R)>>1;
-	if (l <= mid)
-		Change(left, L, mid, l, r, c);
-	if (mid < r)
-		Change(right, mid+1, R, l, r, c);
-	PushUp(idx);
 }
 int Query(int idx, int L, int R, int l, int r, int c)
 {
@@ -127,12 +102,8 @@ int main()
 		while (M--)
 		{
 			scanf("%d%d%d%d", &ope, &X, &Y, &C);
-			if (ope == 1)
-				Add(1, 1, N, X, Y, C);
-			else if (ope == 2)
-				Multiply(1, 1, N, X, Y, C);
-			else if (ope == 3)
-				Change(1, 1, N, X, Y, C);
+			if (ope < 4)
+				Update(1, 1, N, X, Y, ope, C);
 			else
 				printf("%d\n", Query(1, 1, N, X, Y, C));
 		}
