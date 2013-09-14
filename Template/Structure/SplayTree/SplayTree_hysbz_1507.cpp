@@ -1,4 +1,3 @@
-// bigoceanlhy	1507	Accepted	43816 kb	1688 ms	C++/Edit	3168 B	2013-08-26 18:24:20
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
